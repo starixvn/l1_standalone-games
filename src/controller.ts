@@ -1,0 +1,63 @@
+import { v4 as uuidv4 } from "uuid";
+import axios from "axios";
+
+type DemoPlayer = {
+  Payload: {
+    Token: string;
+  };
+};
+
+export default function controller({ server }: Context) {
+  server.get("/health", (_, res) => {
+    res.send("OK");
+  });
+
+  server.get("/:gameId", async (req, res) => {
+    const url = "https://lobby.sabaplay.game/api/v2";
+    const language = req.query.language ?? "en";
+    const gameId = req.params.gameId;
+    const now = new Date().toISOString();
+    const seq = uuidv4();
+    const userAgent = req.get("User-Agent");
+
+    if (!gameId) {
+      res.status(400).send("Game ID is required");
+
+      return;
+    }
+
+    const demoPlayerResponse = await axios.post(
+      `${url}/DemoSite/GetDemoPlayer`,
+      {
+        seq: seq,
+        timeStamp: now,
+        payload: {
+          platform: "d",
+        },
+      },
+      { headers: { "User-Agent": userAgent } },
+    );
+
+    const demoPlayer = demoPlayerResponse.data as DemoPlayer;
+    const gameResponse = await axios.post(
+      `${url}/DemoSite/LaunchGame`,
+      {
+        seq: seq,
+        timeStamp: now,
+        payload: {
+          gameId: gameId,
+          language: language,
+          gameMode: "NewPage",
+          browserUserAgent: userAgent,
+        },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${demoPlayer.Payload.Token}`,
+        },
+      },
+    );
+
+    res.redirect(gameResponse.data.Payload.ReturnUrl);
+  });
+}

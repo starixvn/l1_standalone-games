@@ -1,0 +1,27 @@
+{
+  "dependencies": {
+    "awilix": "12.0.4",
+    "axios": "1.8.1",
+    "express": "4.21.2",
+    "uuid": "11.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "5.0.0",
+    "nodemon": "3.1.9",
+    "typescript": "5.7.3"
+  },
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json"
+  },
+  "license": "UNLICENSED",
+  "main": "dist/index.js",
+  "name": "standalone-games",
+  "scripts": {
+    "build": "tsc --project tsconfig.production.json",
+    "start": "nodemon"
+  },
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "version": "1.0.0"
+}
