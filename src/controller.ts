@@ -57,7 +57,10 @@ export default function controller({ server }: Context) {
         },
       },
     );
+    const redirectUrl = new URL(gameResponse.data.Payload.ReturnUrl);
 
-    res.redirect(gameResponse.data.Payload.ReturnUrl);
+    redirectUrl.searchParams.delete("rurl");
+
+    res.redirect(redirectUrl.toString());
   });
 }
