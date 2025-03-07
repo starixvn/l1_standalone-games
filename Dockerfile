@@ -15,6 +15,7 @@ RUN npx mod-pruner prune --force && rm package-lock.json
 
 FROM base AS app
 COPY --from=clean /app .
+COPY views views
 USER node
 EXPOSE 5000
 CMD ["node", "dist/bin.js"]

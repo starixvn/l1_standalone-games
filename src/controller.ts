@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
+import { isNumberObject } from "util/types";
 
 type DemoPlayer = {
   Payload: {
@@ -20,7 +21,7 @@ export default function controller({ server }: Context) {
     const seq = uuidv4();
     const userAgent = req.get("User-Agent");
 
-    if (!gameId) {
+    if (!gameId || isNaN(Number(gameId))) {
       res.status(400).send("Game ID is required");
 
       return;
@@ -57,10 +58,11 @@ export default function controller({ server }: Context) {
         },
       },
     );
+
     const redirectUrl = new URL(gameResponse.data.Payload.ReturnUrl);
 
     redirectUrl.searchParams.delete("rurl");
 
-    res.redirect(redirectUrl.toString());
+    res.render("main", { url: redirectUrl.toString() });
   });
 }
