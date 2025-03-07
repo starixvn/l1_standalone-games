@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
-import { isNumberObject } from "util/types";
 
 type DemoPlayer = {
   Payload: {
@@ -20,6 +19,11 @@ export default function controller({ server }: Context) {
     const now = new Date().toISOString();
     const seq = uuidv4();
     const userAgent = req.get("User-Agent");
+    const proxy = {
+      host: "lisasqd.nebula.prod",
+      port: 8801,
+      protocol: "http",
+    };
 
     if (!gameId || isNaN(Number(gameId))) {
       res.status(400).send("Game ID is required");
@@ -36,7 +40,7 @@ export default function controller({ server }: Context) {
           platform: "d",
         },
       },
-      { headers: { "User-Agent": userAgent } },
+      { headers: { "User-Agent": userAgent }, proxy },
     );
 
     const demoPlayer = demoPlayerResponse.data as DemoPlayer;
@@ -56,6 +60,7 @@ export default function controller({ server }: Context) {
         headers: {
           Authorization: `Bearer ${demoPlayer.Payload.Token}`,
         },
+        proxy,
       },
     );
 
