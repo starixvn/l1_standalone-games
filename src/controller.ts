@@ -13,17 +13,13 @@ export default function controller({ server }: Context) {
   });
 
   server.get("/:gameId", async (req, res) => {
-    const url = "https://lobby.sabaplay.game/api/v2";
+    const url =
+      "http://saba-play-official-site.3rd-party.t1p.nebula.prod:21080/api/v2";
     const language = req.query.language ?? "en";
     const gameId = req.params.gameId;
     const now = new Date().toISOString();
     const seq = uuidv4();
     const userAgent = req.get("User-Agent");
-    const proxy = {
-      host: "lisasqd.nebula.prod",
-      port: 8801,
-      protocol: "http",
-    };
 
     if (!gameId || isNaN(Number(gameId))) {
       res.status(400).send("Game ID is required");
@@ -40,7 +36,7 @@ export default function controller({ server }: Context) {
           platform: "d",
         },
       },
-      { headers: { "User-Agent": userAgent }, proxy },
+      { headers: { "User-Agent": userAgent } },
     );
 
     const demoPlayer = demoPlayerResponse.data as DemoPlayer;
@@ -60,7 +56,6 @@ export default function controller({ server }: Context) {
         headers: {
           Authorization: `Bearer ${demoPlayer.Payload.Token}`,
         },
-        proxy,
       },
     );
 
