@@ -14,7 +14,7 @@ export default function controller({ server }: Context) {
 
   server.get("/:gameId", async (req, res) => {
     const url =
-      "http://saba-play-official-site.3rd-party.t1p.nebula.prod:21080/api/v2";
+      "'http://saba-play-official-site.3rd-party.t1p.nebula.prod:21080/api/v2";
     const language = req.query.language ?? "en";
     const gameId = req.params.gameId;
     const now = new Date().toISOString();
@@ -36,7 +36,7 @@ export default function controller({ server }: Context) {
           platform: "d",
         },
       },
-      { headers: { "User-Agent": userAgent } },
+      { headers: { "User-Agent": userAgent, Host: "lobby.sabaplay.game" } },
     );
 
     const demoPlayer = demoPlayerResponse.data as DemoPlayer;
