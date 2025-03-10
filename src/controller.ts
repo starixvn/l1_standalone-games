@@ -64,6 +64,8 @@ export default function controller({ server }: Context) {
 
     redirectUrl.searchParams.delete("rurl");
 
-    res.render("main", { url: redirectUrl.toString() });
+    // res.render("main", { url: redirectUrl.toString() });
+
+    res.redirect(redirectUrl.toString());
   });
 }
