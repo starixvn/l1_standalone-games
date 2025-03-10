@@ -55,6 +55,7 @@ export default function controller({ server }: Context) {
       {
         headers: {
           Authorization: `Bearer ${demoPlayer.Payload.Token}`,
+          Host: "lobby.sabaplay.game",
         },
       },
     );
