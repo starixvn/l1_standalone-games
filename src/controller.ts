@@ -14,7 +14,7 @@ export default function controller({ server }: Context) {
 
   server.get("/:gameId", async (req, res) => {
     const url =
-      "http://saba-play-official-site.3rd-party.t1p.nebula.prod:21080/api/v2";
+      "http://saba-play-official-site.3rd-party.klt1p.gamora.prod:32180/api/v2";
     const language = req.query.language ?? "en";
     const gameId = req.params.gameId;
     const now = new Date().toISOString();
